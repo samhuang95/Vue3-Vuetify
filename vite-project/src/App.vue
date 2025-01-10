@@ -1,85 +1,44 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
+// src/App.vue
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <v-app>
+    <NavSidebar v-model:drawer="drawer" v-model:rail="rail" :mobile="mobile" />
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+    <AppHeader v-model:drawer="drawer" :mobile="mobile" />
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+    <v-main class="bg-grey-lighten-2">
+      <v-container fluid>
+        <router-view></router-view>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
+<script lang="ts" setup>
+import { ref, onMounted, onUnmounted } from 'vue'
+import { useDisplay } from 'vuetify'
+import NavSidebar from '@/components/layout/NavSidebar.vue'
+import AppHeader from '@/components/layout/AppHeader.vue'
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+const { mobile } = useDisplay()
+const drawer = ref(true)
+const rail = ref(false)
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
+// 監聽視窗大小變化
+const handleResize = () => {
+  if (window.innerWidth < 960) {
+    rail.value = false
+    drawer.value = false
+  } else {
+    drawer.value = true
   }
 }
-</style>
+
+onMounted(() => {
+  handleResize()
+  window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
+</script>
