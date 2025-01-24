@@ -6,9 +6,12 @@
     <AppHeader v-model:drawer="drawer" :mobile="mobile" />
 
     <v-main class="bg-grey-lighten-2">
-      <v-container fluid>
+      <!-- <v-container fluid>
         <router-view></router-view>
-      </v-container>
+      </v-container> -->
+      <div style="padding: 1rem">
+        <router-view></router-view>
+      </div>
     </v-main>
   </v-app>
 </template>
