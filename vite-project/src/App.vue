@@ -22,7 +22,7 @@ import { useDisplay } from 'vuetify'
 import NavSidebar from '@/components/layout/NavSidebar.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
 
-const { mobile } = useDisplay()
+const { mobile } = useDisplay() // mobile, tablet, desktop 可以引入這些來進行斷點設定
 const drawer = ref(true)
 const rail = ref(false)
 
